@@ -82,7 +82,15 @@ function App() {
         <Box
           title="Moomintroll"
           item={computerSelect}
-          result={result === "Lose" ? "Win" : result === "Tie" ? "Tie" : ""}
+          result={
+            result
+              ? result === "Win"
+                ? "Lose"
+                : result === "Tie"
+                ? "Tie"
+                : "Win"
+              : ""
+          }
           score={score.computer}
         />
         <Box
