@@ -76,23 +76,29 @@ function App() {
   };
 
   return (
-    <div>
+    <div className="bg">
+      <h1 className="title">🏔️ Moomin Valley: Hands Clash</h1>
       <div className="main">
         <Box
-          title="Computer"
+          title="Moomintroll"
           item={computerSelect}
           result={result === "Lose" ? "Win" : result === "Tie" ? "Tie" : ""}
           score={score.computer}
         />
-        <Box title="You" item={userSelect} result={result} score={score.user} />
+        <Box
+          title="Little My"
+          item={userSelect}
+          result={result}
+          score={score.user}
+        />
+      </div>
+      <div className="reset-container">
+        <Button onClick={resetGame} title="Reset" className="reset-button" />
       </div>
       <div className="buttons">
         <Button onClick={() => play("rock")} title="Rock" />
-        <Button onClick={() => play("scissors")} title="Scissors" />
         <Button onClick={() => play("paper")} title="Paper" />
-        <div className="reset-container">
-          <Button onClick={resetGame} title="Reset" className="reset-button" />
-        </div>
+        <Button onClick={() => play("scissors")} title="Scissors" />
       </div>
     </div>
   );

@@ -7,7 +7,13 @@ const Box = ({ title, item, result, score }) => {
   return (
     <div className={boxClass}>
       <h1>{title}</h1>
-      {item && <img className="item-img" src={item.img} alt={item.name} />}
+      {item && (
+        <img
+          className={`item-img ${result === "Win" ? "win" : ""}`}
+          src={item.img}
+          alt={item.name}
+        />
+      )}
       <h2>{result}</h2>
       <h3>Score: {score}</h3>
     </div>
