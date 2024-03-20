@@ -1,6 +1,5 @@
 .bg{
   background-color: #3A8D9D;
-  margin: 100px;
   padding: 60px
 }
 .title{
@@ -50,11 +49,17 @@
   display: flex;
   justify-content: center;
 }
-
+.button-container{
+  display: flex;
+  flex-flow: column;
+  justify-items: center;
+  align-items: center;
+}
 .buttons{
   display: flex;
   justify-content: center;
   margin-top: 20px;
+  margin-bottom: 200px;
 }
 
 button {
@@ -98,8 +103,10 @@ button:hover {
 }
 .reset-container {
   display: flex;
-  justify-content: flex-end; 
+  justify-content: center; 
   width: 100%;
+  margin-left: 500px;
+  margin-top: 10px;
 }
 
 @keyframes bounce {

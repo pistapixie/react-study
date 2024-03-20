@@ -100,13 +100,15 @@ function App() {
           score={score.user}
         />
       </div>
-      <div className="reset-container">
-        <Button onClick={resetGame} title="Reset" className="reset-button" />
-      </div>
-      <div className="buttons">
-        <Button onClick={() => play("rock")} title="Rock" />
-        <Button onClick={() => play("paper")} title="Paper" />
-        <Button onClick={() => play("scissors")} title="Scissors" />
+      <div className="button-container">
+        <div className="reset-container">
+          <Button onClick={resetGame} title="Reset" className="reset-button" />
+        </div>
+        <div className="buttons">
+          <Button onClick={() => play("rock")} title="Rock" />
+          <Button onClick={() => play("paper")} title="Paper" />
+          <Button onClick={() => play("scissors")} title="Scissors" />
+        </div>
       </div>
     </div>
   );
