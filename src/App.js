@@ -16,48 +16,84 @@ const choice = {
     name: "Paper",
     img: "https://i.pinimg.com/564x/fa/8d/4d/fa8d4dcc3eed46c789be966047ad8637.jpg",
   },
+  userDefault: {
+    name: "Choose",
+    img: "/you.png",
+  },
+  computerDefault: {
+    name: "Waiting",
+    img: "https://i.pinimg.com/474x/8f/3e/24/8f3e2418d915732326e87ec14085b4d2.jpg",
+  },
 };
-
 function App() {
-  const [userSelect, setUserSelect] = useState(null);
-  const [computerSelect, setComputerSelect] = useState(null);
+  const [userSelect, setUserSelect] = useState(choice.userDefault);
+  const [computerSelect, setComputerSelect] = useState(choice.computerDefault);
   const [result, setResult] = useState("");
-  const play = (userChoice) => {
-    setUserSelect(choice[userChoice]);
-    let computerChoice = randomChoice();
-    setComputerSelect(computerChoice);
-    judgement(computerChoice, choice[userChoice]);
-  };
+  const [score, setScore] = useState({ user: 0, computer: 0 });
 
   const judgement = (computer, user) => {
-    console.log("user:", user, "computer:", computer);
     if (user.name === computer.name) {
-      setResult("Tie");
-    } else if (user.name === "Rock") {
-      setResult(computer.name === "Scissors" ? "Win" : "Lose");
-    } else if (user.name === "Scissors") {
-      setResult(computer.name === "Paper" ? "Win" : "Lose");
-    } else if (user.name === "Paper") {
-      setResult(computer.name === "Rock" ? "Win" : "Lose");
+      return "Tie";
+    } else if (
+      (user.name === "Rock" && computer.name === "Scissors") ||
+      (user.name === "Scissors" && computer.name === "Paper") ||
+      (user.name === "Paper" && computer.name === "Rock")
+    ) {
+      return "Win";
+    } else {
+      return "Lose";
+    }
+  };
+
+  const play = (userChoice) => {
+    const user = choice[userChoice];
+    const computer = randomChoice();
+    setUserSelect(user);
+    setComputerSelect(computer);
+    const gameResult = judgement(computer, user);
+    setResult(gameResult);
+
+    if (gameResult === "Win") {
+      setScore({ ...score, user: score.user + 1 });
+    } else if (gameResult === "Lose") {
+      setScore({ ...score, computer: score.computer + 1 });
     }
   };
 
   const randomChoice = () => {
-    let itemArray = Object.keys(choice);
-    // console.log("item array", itemArray);
-    let randomItem = Math.floor(Math.random() * itemArray.length);
-    let final = itemArray[randomItem];
-    return choice[final];
+    const keys = Object.keys(choice).filter(
+      (key) => key !== "userDefault" && key !== "computerDefault"
+    );
+    const randomNum = Math.floor(Math.random() * keys.length);
+    return choice[keys[randomNum]];
   };
+
+  const resetGame = () => {
+    setUserSelect(choice.userDefault);
+    setComputerSelect(choice.computerDefault);
+    setResult("");
+    setScore({ user: 0, computer: 0 });
+  };
+
   return (
     <div>
       <div className="main">
-        <Box title="Meow" item={computerSelect} />
-        <Box title="You" item={userSelect} result={result} />
+        <Box
+          title="Computer"
+          item={computerSelect}
+          result={result === "Lose" ? "Win" : result === "Tie" ? "Tie" : ""}
+          score={score.computer}
+        />
+        <Box title="You" item={userSelect} result={result} score={score.user} />
       </div>
-      <Button onClick={() => play("scissors")} title="가위" />
-      <Button onClick={() => play("rock")} title="바위" />
-      <Button onClick={() => play("paper")} title="보" />
+      <div className="buttons">
+        <Button onClick={() => play("rock")} title="Rock" />
+        <Button onClick={() => play("scissors")} title="Scissors" />
+        <Button onClick={() => play("paper")} title="Paper" />
+        <div className="reset-container">
+          <Button onClick={resetGame} title="Reset" className="reset-button" />
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,13 +1,61 @@
-.box{
+.box {
   border: 1px solid black;
-  width: 500px;
+  width: 300px;
+  text-align: center;
+  margin: 10px;
+  display: flex;
+  flex-direction: column; 
+  justify-content: space-between; 
+}
+.box .score {
+  margin-top: auto;
+}
+.box.win {
+  border: 2px solid green;
 }
 
-.item-img{
-  width: 400px;
+.box.lose {
+  border: 2px solid red;
+}
+
+
+.item-img {
+  width: 200px; 
+
+  object-fit: cover; 
+  align-self: center;
 }
 
 .main{
   display: flex;
   justify-content: center;
+}
+
+.buttons{
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+button {
+  margin: 0 10px;
+  padding: 10px;
+}
+.reset-button {
+  background-color: #4CAF50; 
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 12px;
+}
+.reset-container {
+  display: flex;
+  justify-content: flex-end; 
+  width: 100%;
 }
