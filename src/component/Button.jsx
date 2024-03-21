@@ -1,11 +1,14 @@
-import React from "react";
+import React, { Component } from "react";
 
-const Button = ({ onClick, title, className }) => {
-  return (
-    <button onClick={onClick} className={className}>
-      {title}
-    </button>
-  );
-};
+class Button extends Component {
+  render() {
+    const { onClick, title, className } = this.props;
+    return (
+      <button onClick={onClick} className={className}>
+        {title}
+      </button>
+    );
+  }
+}
 
 export default Button;

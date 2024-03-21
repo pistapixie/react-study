@@ -1,37 +1,21 @@
+import React, { Component } from "react";
 import "./App.css";
 import Box from "./component/Box";
 import Button from "./component/Button";
-import { useState } from "react";
+import { choice } from "./choice";
 
-const choice = {
-  rock: {
-    name: "Rock",
-    img: "https://i.pinimg.com/564x/8a/27/c6/8a27c6f15db4d22073a4835fcb5e7208.jpg",
-  },
-  scissors: {
-    name: "Scissors",
-    img: "https://i.pinimg.com/564x/f8/83/14/f88314e5aa39f2faa0c314b1d95eda8a.jpg",
-  },
-  paper: {
-    name: "Paper",
-    img: "https://i.pinimg.com/564x/fa/8d/4d/fa8d4dcc3eed46c789be966047ad8637.jpg",
-  },
-  userDefault: {
-    name: "Choose",
-    img: "/you.png",
-  },
-  computerDefault: {
-    name: "Waiting",
-    img: "https://i.pinimg.com/474x/8f/3e/24/8f3e2418d915732326e87ec14085b4d2.jpg",
-  },
-};
-function App() {
-  const [userSelect, setUserSelect] = useState(choice.userDefault);
-  const [computerSelect, setComputerSelect] = useState(choice.computerDefault);
-  const [result, setResult] = useState("");
-  const [score, setScore] = useState({ user: 0, computer: 0 });
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      userSelect: choice.userDefault,
+      computerSelect: choice.computerDefault,
+      result: "",
+      score: { user: 0, computer: 0 },
+    };
+  }
 
-  const judgement = (computer, user) => {
+  judgement = (computer, user) => {
     if (user.name === computer.name) {
       return "Tie";
     } else if (
@@ -45,22 +29,27 @@ function App() {
     }
   };
 
-  const play = (userChoice) => {
+  play = (userChoice) => {
     const user = choice[userChoice];
-    const computer = randomChoice();
-    setUserSelect(user);
-    setComputerSelect(computer);
-    const gameResult = judgement(computer, user);
-    setResult(gameResult);
-
-    if (gameResult === "Win") {
-      setScore({ ...score, user: score.user + 1 });
-    } else if (gameResult === "Lose") {
-      setScore({ ...score, computer: score.computer + 1 });
-    }
+    const computer = this.randomChoice();
+    this.setState(
+      {
+        userSelect: user,
+        computerSelect: computer,
+        result: this.judgement(computer, user),
+      },
+      () => {
+        const { result, score } = this.state;
+        if (result === "Win") {
+          this.setState({ score: { ...score, user: score.user + 1 } });
+        } else if (result === "Lose") {
+          this.setState({ score: { ...score, computer: score.computer + 1 } });
+        }
+      }
+    );
   };
 
-  const randomChoice = () => {
+  randomChoice = () => {
     const keys = Object.keys(choice).filter(
       (key) => key !== "userDefault" && key !== "computerDefault"
     );
@@ -68,50 +57,59 @@ function App() {
     return choice[keys[randomNum]];
   };
 
-  const resetGame = () => {
-    setUserSelect(choice.userDefault);
-    setComputerSelect(choice.computerDefault);
-    setResult("");
-    setScore({ user: 0, computer: 0 });
+  resetGame = () => {
+    this.setState({
+      userSelect: choice.userDefault,
+      computerSelect: choice.computerDefault,
+      result: "",
+      score: { user: 0, computer: 0 },
+    });
   };
 
-  return (
-    <div className="bg">
-      <h1 className="title">🏔️ Moomin Valley: Hands Clash</h1>
-      <div className="main">
-        <Box
-          title="Moomintroll"
-          item={computerSelect}
-          result={
-            result
-              ? result === "Win"
-                ? "Lose"
-                : result === "Tie"
-                ? "Tie"
-                : "Win"
-              : ""
-          }
-          score={score.computer}
-        />
-        <Box
-          title="Little My"
-          item={userSelect}
-          result={result}
-          score={score.user}
-        />
-      </div>
-      <div className="button-container">
-        <div className="reset-container">
-          <Button onClick={resetGame} title="Reset" className="reset-button" />
+  render() {
+    const { userSelect, computerSelect, result, score } = this.state;
+    return (
+      <div className="bg">
+        <h1 className="title">🏔️ Moomin Valley: Hands Clash</h1>
+        <div className="main">
+          <Box
+            title="Moomintroll"
+            item={computerSelect}
+            result={
+              result
+                ? result === "Win"
+                  ? "Lose"
+                  : result === "Tie"
+                  ? "Tie"
+                  : "Win"
+                : ""
+            }
+            score={score.computer}
+          />
+          <Box
+            title="Little My"
+            item={userSelect}
+            result={result}
+            score={score.user}
+          />
         </div>
-        <div className="buttons">
-          <Button onClick={() => play("rock")} title="Rock" />
-          <Button onClick={() => play("paper")} title="Paper" />
-          <Button onClick={() => play("scissors")} title="Scissors" />
+        <div className="button-container">
+          <div className="reset-container">
+            <Button
+              onClick={this.resetGame}
+              title="Reset"
+              className="reset-button"
+            />
+          </div>
+          <div className="buttons">
+            <Button onClick={() => this.play("rock")} title="Rock" />
+            <Button onClick={() => this.play("paper")} title="Paper" />
+            <Button onClick={() => this.play("scissors")} title="Scissors" />
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default App;
